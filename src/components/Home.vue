@@ -48,6 +48,9 @@
                         <p>There are currently <strong id="fileCounter">0</strong> files in your Bucket.</p>
                         <p>Download them to this computer!</p>
                         <br/>
+                        <div class="progress red" style="display: none" id="downloadProgress">
+                            <div class="indeterminate" style="background-color: lightgray"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -124,6 +127,8 @@
 
                         //upload file
                         ref.put(file).then(function (snapshot) {
+                            M.toast({html: `Uploaded file ${i + 1} of ${files.length}…`});
+
                             if (i === files.length - 1) {
                                 //hide progress indicator
                                 document.getElementById("uploadProgress").style.display = "none";
@@ -152,6 +157,10 @@
              * Called when the download FAB is clicked
              */
             onDownloadFiles() {
+                //show the progress bar and toast downloading
+                document.getElementById("downloadProgress").style.display = "block";
+                M.toast({html: 'Downloading...'});
+
                 //list all files in our bucket
                 firebase
                     .storage()
@@ -178,6 +187,8 @@
                                         //now trigger the download of the jszip file
                                         zip.generateAsync({type: "blob"}).then(function (content) {
                                             saveAs(content, "bucket.zip");
+                                            M.toast({html: 'Download finished!'});
+                                            document.getElementById("downloadProgress").style.display = "none";
                                         });
                                     }
                                 });
@@ -186,9 +197,6 @@
                                 console.log(err);
                             })
                         });
-
-                        //toast download finished
-                        M.toast({html: 'Download finished!'});
                     });
             },
             /**

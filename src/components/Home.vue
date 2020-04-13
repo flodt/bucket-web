@@ -206,6 +206,8 @@
                                     zip.file(file.name, data, {binary: true});
                                     count++;
 
+                                    M.toast({html: `Downloaded file ${count} of ${list.items.length}…`});
+
                                     if (count === list.items.length) {
                                         console.log("Triggering download");
                                         //now trigger the download of the jszip file

@@ -16,10 +16,10 @@
                     <div class="card-content">
                         <span class="card-title">Upload</span>
                         <p>Upload files to your Bucket to share them with your other devices!</p>
+                        <!-- this should accept="*/*" -->
                         <input type="file"
                                style="display: none"
                                ref="fileInputUpload"
-                               accept="*/*"
                                @change="onUploadFilePicked"
                                multiple
                         >

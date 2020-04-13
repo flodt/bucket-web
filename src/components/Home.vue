@@ -4,7 +4,7 @@
         <br/>
         <div class="row">
             <div class="col s12 m3">
-                <div class="card" style="max-width: 400px">
+                <div class="card" style="max-width: 400px" id="uploadDropZone">
                     <div class="card-image">
                         <img src="static/card_bucket_empty.png">
                         <a class="btn-floating btn-large halfway-fab waves-effect waves-light red"
@@ -20,6 +20,7 @@
                         <input type="file"
                                style="display: none"
                                ref="fileInputUpload"
+                               id="fileInputUploadId"
                                @change="onUploadFilePicked"
                                multiple
                         >
@@ -87,6 +88,23 @@
 
                 //update the download card
                 this.updateDownloadCard();
+
+                //enable drag-drop file upload
+                let dropContainer = document.getElementById("uploadDropZone");
+                dropContainer.ondragover = dropContainer.ondragenter = function (event) {
+                    //stop propagation, we'll handle this ourselves
+                    event.preventDefault();
+                    event.stopPropagation();
+                };
+
+                let vm = this;
+
+                dropContainer.ondrop = function (event) {
+                    event.preventDefault();
+                    let fileInput = document.getElementById("fileInputUploadId");
+                    fileInput.files = event.dataTransfer.files;
+                    vm.onUploadFilePicked();
+                }
             });
         },
         methods: {
@@ -99,9 +117,11 @@
             /**
              * Called when the file selection is completed
              */
-            onUploadFilePicked(event) {
-                const files = event.target.files;
+            onUploadFilePicked() {
+                const files = document.getElementById("fileInputUploadId").files;
                 if (files.length === 0) return;
+
+                M.toast({html: `Uploading ${files.length} files…`});
 
                 //show progress indicator
                 document.getElementById("uploadProgress").style.display = "block";
@@ -120,6 +140,8 @@
                         refToDelete.delete()
                     })
                 }).then(function () {
+                    let count = 0;
+
                     //upload each selected file
                     for (let i = 0; i < files.length; i++) {
                         const file = files[i];
@@ -127,9 +149,11 @@
 
                         //upload file
                         ref.put(file).then(function (snapshot) {
-                            M.toast({html: `Uploaded file ${i + 1} of ${files.length}…`});
+                            //update counter and toast progress
+                            count++;
+                            M.toast({html: `Uploaded file ${count} of ${files.length}…`});
 
-                            if (i === files.length - 1) {
+                            if (count === files.length) {
                                 //hide progress indicator
                                 document.getElementById("uploadProgress").style.display = "none";
 
@@ -138,7 +162,7 @@
 
                                 //update the download card
                                 let amount = files.length;
-                                document.getElementById("fileCounter").innerHTML = amount.toString(10);
+                                document.getElementById("fileCounter").innerHTML = amount.toString();
 
                                 //show or hide the download action button
                                 document.getElementById("downloadFilesFAB").style.display = (amount === 0) ? "none" : "block";

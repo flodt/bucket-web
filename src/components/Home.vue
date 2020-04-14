@@ -209,7 +209,9 @@
                                     M.toast({html: `Downloaded file ${count} of ${list.items.length}…`});
 
                                     if (count === list.items.length) {
-                                        console.log("Triggering download");
+                                        //toast archive generation
+                                        M.toast({html: `Generating zip archive…`});
+
                                         //now trigger the download of the jszip file
                                         zip.generateAsync({type: "blob"}).then(function (content) {
                                             saveAs(content, "bucket.zip");

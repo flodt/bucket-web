@@ -3,7 +3,7 @@
         <navigation></navigation>
         <br/>
         <div class="row">
-            <div class="col s12 m3">
+            <div class="col s12 m4 l3">
                 <div class="card" style="max-width: 400px" id="uploadDropZone">
                     <div class="card-image">
                         <img src="static/card_bucket_empty.png">
@@ -32,7 +32,7 @@
                 </div>
             </div>
 
-            <div class="col s12 m3">
+            <div class="col s12 m4 l3">
                 <div class="card" style="max-width: 400px">
                     <div class="card-image">
                         <img src="static/card_bucket_full.png">
@@ -46,7 +46,7 @@
                     </div>
                     <div class="card-content">
                         <span class="card-title">Download</span>
-                        <p>There are currently <strong id="fileCounter">0</strong> files in your Bucket.</p>
+                        <p>There are <strong id="fileCounter">0</strong> files in your Bucket.</p>
                         <p>Download them to this computer!</p>
                         <br/>
                         <div class="progress red" style="display: none" id="downloadProgress">

@@ -2,7 +2,7 @@
     <nav>
         <div class="nav-wrapper amber darken-2">
             <!-- <a href="#" class="brand-logo">Logo</a> -->
-            <router-link to="/" class="brand-logo left" tag="a">Bucket</router-link>
+            <router-link to="/" class="brand-logo left" tag="a" style="padding-left: 10px">Bucket</router-link>
 
             <ul id="nav-mobile" class="right">
                 <li v-show="!user">

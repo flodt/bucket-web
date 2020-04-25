@@ -19,7 +19,7 @@
 
 ## 🤝 Contributing
 
-Issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/flodt/whats-my-next-mvg/issues).
+Issues and feature requests are welcome!<br />Feel free to check the issues page.
 
 ## Show your support
 

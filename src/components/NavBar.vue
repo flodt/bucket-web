@@ -2,17 +2,29 @@
     <nav>
         <div class="nav-wrapper amber darken-2">
             <!-- <a href="#" class="brand-logo">Logo</a> -->
-            <router-link to="/" class="brand-logo left" tag="a" style="padding-left: 10px">Bucket</router-link>
+            <router-link to="/" class="brand-logo left" tag="a" style="padding-left: 10px">
+                <i class="material-icons left">home</i>
+                Bucket
+            </router-link>
 
             <ul id="nav-mobile" class="right">
                 <li v-show="!user">
-                    <router-link to="/login">Login</router-link>
+                    <router-link to="/login">
+                        <i class="material-icons left">open_in_browser</i>
+                        Login
+                    </router-link>
                 </li>
                 <li v-show="user">
-                    <router-link to="/profile">Profile</router-link>
+                    <router-link to="/profile">
+                        <i class="material-icons left">person</i>
+                        Profile
+                    </router-link>
                 </li>
                 <li v-show="user">
-                    <a @click="logout">Logout</a>
+                    <a @click="logout">
+                        <i class="material-icons left">exit_to_app</i>
+                        Logout
+                    </a>
                 </li>
             </ul>
         </div>

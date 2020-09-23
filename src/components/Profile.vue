@@ -15,21 +15,61 @@
                                 class="teal-text">{{user.providerData[0].providerId}}</strong></p>
                     <br/>
                     <p><a
-                            class="waves-effect waves-light btn grey"
-                            @click="onClearBucket"
+                            class="waves-effect waves-light grey btn tooltipped modal-trigger"
+                            href="#clear-bucket-modal"
+                            data-position="bottom"
+                            data-tooltip="Clear all files from your Bucket..."
                     >
                         <i class="material-icons left">clear_all</i>
                         Clear bucket
                     </a></p>
                     <br/>
                     <p><a
-                            class="waves-effect waves-light btn red"
-                            @click="onDeleteUserAccount"
+                            class="waves-effect waves-light red btn tooltipped modal-trigger"
+                            href="#delete-account-modal"
+                            data-position="bottom"
+                            data-tooltip="Delete your user account..."
                     >
                         <i class="material-icons left">delete</i>
                         Delete account
                     </a></p>
                 </div>
+            </div>
+        </div>
+
+        <div id="clear-bucket-modal" class="modal">
+            <div class="modal-content">
+                <h4>Clearing Bucket...</h4>
+                <p>Do you really want to clear your Bucket?</p>
+                <p>You won't be able to undo this action!</p>
+            </div>
+            <div class="modal-footer">
+                <a
+                        href="#!"
+                        class="modal-close waves-effect waves-green btn red"
+                        @click="onClearBucket"
+                >
+                    Yes, I'm sure. I know I'll lose all files.
+                </a>
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat">No, keep my files.</a>
+            </div>
+        </div>
+
+        <div id="delete-account-modal" class="modal">
+            <div class="modal-content">
+                <h4>Deleting user account...</h4>
+                <p>Do you really want to delete your user account?</p>
+                <p>You won't be able to undo this action!</p>
+            </div>
+            <div class="modal-footer">
+                <a
+                        href="#!"
+                        class="modal-close waves-effect waves-green btn red"
+                        @click="onDeleteUserAccount"
+                >
+                    Yes, I'm sure. I am aware this is final.
+                </a>
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Oh god, no. Cancel</a>
             </div>
         </div>
     </section>
@@ -47,6 +87,15 @@
         },
         components: {
             navigation
+        },
+        updated() {
+            const tooltippeds = document.querySelectorAll('.tooltipped');
+            const tooltippeds_init = M.Tooltip.init(tooltippeds, {
+                enterDelay: 500
+            });
+
+            const modals = document.querySelectorAll('.modal');
+            const modals_init = M.Modal.init(modals, {});
         },
         created() {
             firebase.auth().onAuthStateChanged(user => {

@@ -140,6 +140,15 @@
                 });
             },
             onClearBucket() {
+                //remove the URL from the database
+                firebase
+                    .database()
+                    .ref()
+                    .child(this.user.uid)
+                    .set({
+                        url: ""
+                    });
+
                 //delete all files in the bucket
                 const bucket = firebase
                     .storage()
@@ -157,7 +166,7 @@
                 }).catch(function (err) {
                     alert("Could not clear the bucket.");
                     console.log(err);
-                })
+                });
             }
         }
     };

@@ -65,6 +65,45 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col s12 m4 l3">
+                <div class="card" style="max-width: 400px">
+                    <div class="card-image">
+                        <img src="static/card_bucket_link.png">
+                        <a class="btn-floating btn-large halfway-fab waves-effect waves-light red tooltipped"
+                           data-tooltip="Open the transferred URL..."
+                           data-position="bottom"
+                           id="openURLFAB"
+                           style="display: none"
+                           @click="onOpenURL"
+                        >
+                            <i class="material-icons">open_in_new</i>
+                        </a>
+                    </div>
+                    <div class="card-content">
+                        <span class="card-title">Transfer URLs</span>
+                        <p>
+                            Share URLs to other devices here. <strong style="display: none" id="openURLText">Open the transferred
+                            link.</strong>
+                        </p>
+                        <br/>
+
+                        <div class="input-field">
+                            <i class="material-icons prefix">link</i>
+                            <input id="enter_url" type="text" class="validate">
+                            <label for="enter_url">Enter URL...</label>
+                        </div>
+                        <a
+                                id="submit_url_button"
+                                class="btn red waves-effect waves-light"
+                                style="display: none; alignment: center"
+                                @click="onSubmitURL"
+                        >
+                            Submit
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 </template>
@@ -118,10 +157,62 @@
                     let fileInput = document.getElementById("fileInputUploadId");
                     fileInput.files = event.dataTransfer.files;
                     vm.onUploadFilePicked();
-                }
+                };
+
+                //add enter key event
+                document.getElementById("enter_url").addEventListener('keyup', function (event) {
+                    if (event.code === 'Enter') {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        document.getElementById("submit_url_button").click();
+                    }
+                });
             });
         },
         methods: {
+            /**
+             * Called when the open URL FAB is clicked.
+             */
+            onOpenURL() {
+                firebase
+                    .database()
+                    .ref()
+                    .child(this.user.uid)
+                    .once('value')
+                    .then(function (snapshot) {
+                        const databaseUrl = snapshot.val() && snapshot.val().url || "";
+
+                        try {
+                            new URL(databaseUrl);
+                            window.open(databaseUrl);
+                            M.toast({html: `Opening URL…`});
+                        } catch (_) {
+                            M.toast({html: `The shared URL was invalid.`});
+                        }
+                    });
+            },
+            /**
+             * Called when the URL field is submitted.
+             */
+            onSubmitURL() {
+                let inputContent = document.getElementById("enter_url").value;
+
+                try {
+                    new URL(inputContent);
+                    firebase
+                        .database()
+                        .ref()
+                        .child(this.user.uid)
+                        .set({
+                            url: inputContent
+                        });
+
+                    this.updateDownloadCard();
+                    M.toast({html: `URL has been submitted.`});
+                } catch (_) {
+                    M.toast({html: `That is not a valid URL!`});
+                }
+            },
             /**
              * Called when the upload FAB is clicked
              */
@@ -299,6 +390,26 @@
                     //show or hide the download action button
                     document.getElementById("downloadFilesFAB").style.display = (amount === 0) ? "none" : "block";
                 });
+
+                //update the URL display
+                firebase
+                    .database()
+                    .ref()
+                    .child(this.user.uid)
+                    .once('value')
+                    .then(function (snapshot) {
+                        const databaseUrl = snapshot.val() && snapshot.val().url || "";
+
+                        if (databaseUrl !== "") {
+                            document.getElementById("openURLFAB").style.display = "block";
+                            document.getElementById("openURLText").style.display = "inline";
+                            document.getElementById("enter_url").value = databaseUrl;
+                            M.updateTextFields();
+                        } else {
+                            document.getElementById("openURLFAB").style.display = "none";
+                            document.getElementById("openURLText").style.display = "none";
+                        }
+                    });
             }
         }
     };

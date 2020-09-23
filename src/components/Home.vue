@@ -27,8 +27,11 @@
                                multiple
                         >
                         <br/>
-                        <div class="progress red" style="display: none" id="uploadProgress">
-                            <div class="indeterminate" style="background-color: lightgray"></div>
+                        <div class="progress" style="display: none" id="uploadProgress">
+                            <div class="determinate" style="width: 0" id="uploadProgressBar"></div>
+                        </div>
+                        <div style="text-align: center; font-weight: bold; display: none" id="uploadProgressText">
+                            Uploading file 0/0... (0%)
                         </div>
                     </div>
                 </div>
@@ -133,6 +136,7 @@
 
                 //show progress indicator
                 document.getElementById("uploadProgress").style.display = "block";
+                document.getElementById("uploadProgressText").style.display = "block";
 
                 //get bucket reference
                 const bucket = firebase
@@ -149,21 +153,45 @@
                     })
                 }).then(function () {
                     let count = 0;
+                    let individualProgress = new Array(files.length);
 
                     //upload each selected file
                     for (let i = 0; i < files.length; i++) {
                         const file = files[i];
                         const ref = bucket.child(file.name);
+                        individualProgress[i] = 0;
 
                         //upload file
-                        ref.put(file).then(function (snapshot) {
+                        const uploadTask = ref.put(file);
+                        uploadTask.on('state_changed', function (snapshot) {
+                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                            individualProgress[i] = progress;
+                            console.log("Upload task " + i + " is " + progress + " % done");
+                            console.log(individualProgress);
+
+                            //number of already finished files is the number of 100s in the array
+                            let alreadyFinished = 0;
+                            individualProgress.forEach(value => alreadyFinished += (value === 100) ? 1 : 0);
+
+                            //update the progress bar
+                            const totalProgress = individualProgress.reduce((a, b) => a + b, 0) / individualProgress.length;
+                            document.getElementById("uploadProgressBar").style.width = totalProgress + "%";
+                            document.getElementById("uploadProgressText").innerText
+                                = "Uploading file " + alreadyFinished + "/" + files.length + "... (" + totalProgress.toFixed(2) + "%)";
+                        }, function (error) {
+                            //continue propagation of error
+                            throw error;
+                        }, function () {
+
+                        });
+                        uploadTask.then(function () {
                             //update counter and toast progress
                             count++;
-                            M.toast({html: `Uploaded file ${count} of ${files.length}…`});
 
                             if (count === files.length) {
                                 //hide progress indicator
                                 document.getElementById("uploadProgress").style.display = "none";
+                                document.getElementById("uploadProgressText").style.display = "none";
 
                                 //toast upload finished
                                 M.toast({html: 'Upload finished!'});
@@ -175,13 +203,14 @@
                                 //show or hide the download action button
                                 document.getElementById("downloadFilesFAB").style.display = (amount === 0) ? "none" : "block";
                             }
-                        });
+                        })
                     }
                 }).catch(function (err) {
                     alert("An error occurred in file upload!");
                     console.log(err);
                     //hide progress indicator
                     document.getElementById("uploadProgress").style.display = "none";
+                    document.getElementById("uploadProgressText").style.display = "none";
                     this.updateDownloadCard()
                 });
             },

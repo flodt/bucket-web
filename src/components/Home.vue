@@ -56,8 +56,11 @@
                         <p>There are <strong id="fileCounter">0</strong> files in your Bucket.</p>
                         <p>Download them to this computer!</p>
                         <br/>
-                        <div class="progress red" style="display: none" id="downloadProgress">
-                            <div class="indeterminate" style="background-color: lightgray"></div>
+                        <div class="progress" style="display: none" id="downloadProgress">
+                            <div class="determinate" style="width: 0" id="downloadProgressBar"></div>
+                        </div>
+                        <div style="text-align: center; font-weight: bold; display: none" id="downloadProgressText">
+                            Downloading file 0/0... (0%)
                         </div>
                     </div>
                 </div>
@@ -220,6 +223,7 @@
             onDownloadFiles() {
                 //show the progress bar and toast downloading
                 document.getElementById("downloadProgress").style.display = "block";
+                document.getElementById("downloadProgressText").style.display = "block";
                 M.toast({html: 'Downloading...'});
 
                 //list all files in our bucket
@@ -243,22 +247,34 @@
                                     zip.file(file.name, data, {binary: true});
                                     count++;
 
-                                    M.toast({html: `Downloaded file ${count} of ${list.items.length}…`});
+                                    //update progress bar
+                                    document.getElementById("downloadProgressBar").className = "determinate";
+                                    let totalProgress = (count / list.items.length) * 100;
+                                    console.log("Total download progress: " + totalProgress);
+                                    document.getElementById("downloadProgressBar").style.width = totalProgress + "%";
+                                    document.getElementById("downloadProgressText").innerText
+                                        = "Downloading file " + count + "/" + list.items.length + "... (" + totalProgress.toFixed(2) + "%)";
 
                                     if (count === list.items.length) {
-                                        //toast archive generation
-                                        M.toast({html: `Generating zip archive…`});
+                                        //set progress bar to indeterminate
+                                        document.getElementById("downloadProgressBar").className = "indeterminate";
+
+                                        //announce archive generation
+                                        document.getElementById("downloadProgressText").innerText
+                                            = "Generating zip archive...";
 
                                         //now trigger the download of the jszip file
                                         zip.generateAsync({type: "blob"}).then(function (content) {
                                             saveAs(content, "bucket.zip");
                                             M.toast({html: 'Download finished!'});
                                             document.getElementById("downloadProgress").style.display = "none";
+                                            document.getElementById("downloadProgressText").style.display = "none";
                                         });
                                     }
                                 });
                             }).catch(function (err) {
                                 alert("Download failed!");
+                                document.getElementById("downloadProgress").style.display = "none";
                                 console.log(err);
                             })
                         });

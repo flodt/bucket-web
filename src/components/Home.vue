@@ -7,7 +7,9 @@
                 <div class="card" style="max-width: 400px" id="uploadDropZone">
                     <div class="card-image">
                         <img src="static/card_bucket_empty.png">
-                        <a class="btn-floating btn-large halfway-fab waves-effect waves-light red"
+                        <a class="btn-floating btn-large halfway-fab waves-effect waves-light red tooltipped"
+                           data-tooltip="Upload file(s) here..."
+                           data-position="bottom"
                            @click="onPickUploadFile"
                         >
                             <i class="material-icons">file_upload</i>
@@ -36,7 +38,9 @@
                 <div class="card" style="max-width: 400px">
                     <div class="card-image">
                         <img src="static/card_bucket_full.png">
-                        <a class="btn-floating btn-large halfway-fab waves-effect waves-light red"
+                        <a class="btn-floating btn-large halfway-fab waves-effect waves-light red tooltipped"
+                           data-tooltip="Download file(s) here..."
+                           data-position="bottom"
                            style="display: none"
                            id="downloadFilesFAB"
                            @click="onDownloadFiles"
@@ -73,6 +77,10 @@
         },
         components: {
             navigation
+        },
+        mounted() {
+            const elems = document.querySelectorAll('.tooltipped');
+            const instances = M.Tooltip.init(elems, {});
         },
         created() {
             firebase.auth().onAuthStateChanged(user => {

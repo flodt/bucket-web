@@ -1,8 +1,21 @@
 <template>
     <section>
         <navigation></navigation>
-
+        <br/>
         <div class="row" id="file_space">
+            <div class="col s12 m3">
+                <div
+                        class="card-panel"
+                >
+                    <i class="material-icons left">description</i>
+
+                    Screenshot.png
+
+                    <a class="waves-effect waves-orange btn-flat right-align" style="float: right" @click="onClickDeleteButton">Delete</a>
+                    <a class="waves-effect waves-orange btn-flat right-align" style="float: right" @click="onClickDownloadButton">Download</a>
+                </div>
+            </div>
+
             <!--<div class="col s12 m3">
                 <div
                         class="card-panel"
@@ -63,6 +76,13 @@
                 if (user) this.user = user;
             });
         },
-        methods: {}
+        methods: {
+            onClickDeleteButton: function (event) {
+                M.toast({html: "Clicked delete."});
+            },
+            onClickDownloadButton: function (event) {
+                M.toast({html: "Clicked download."});
+            }
+        }
     };
 </script>

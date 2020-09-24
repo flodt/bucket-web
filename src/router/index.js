@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from '@/components/Login'
 import Home from '@/components/Home'
 import Profile from '@/components/Profile'
+import Files from '@/components/Files'
 import firebase from "firebase";
 
 Vue.use(Router);
@@ -10,15 +11,16 @@ Vue.use(Router);
 let router = new Router({
         mode: 'history',
 
-        routes: [{
-            path: '/profile',
-            name: 'Profile',
-            component: Profile,
-            meta: {
-                auth: true
-            }
+        routes: [
+            {
+                path: '/profile',
+                name: 'Profile',
+                component: Profile,
+                meta: {
+                    auth: true
+                }
 
-        },
+            },
             {
                 path: '/login',
                 name: 'Login',
@@ -33,11 +35,18 @@ let router = new Router({
                 name: 'Home',
                 component: Home,
 
+            },
+            {
+                path: '/files',
+                name: 'Files',
+                component: Files,
+                meta: {
+                    auth: true
+                }
             }
         ]
 
     },
-
 );
 
 

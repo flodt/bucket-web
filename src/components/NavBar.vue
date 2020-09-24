@@ -15,6 +15,12 @@
                     </router-link>
                 </li>
                 <li v-show="user">
+                    <router-link to="/files">
+                        <i class="material-icons left">folder</i>
+                        Files
+                    </router-link>
+                </li>
+                <li v-show="user">
                     <router-link to="/profile">
                         <i class="material-icons left">person</i>
                         Profile

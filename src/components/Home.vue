@@ -226,7 +226,7 @@
                 const files = document.getElementById("fileInputUploadId").files;
                 if (files.length === 0) return;
 
-                M.toast({html: `Uploading ${files.length} files…`});
+                M.toast({html: `Uploading ${files.length} file(s)…`});
 
                 //show progress indicator
                 document.getElementById("uploadProgress").style.display = "block";

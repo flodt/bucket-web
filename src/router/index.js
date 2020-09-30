@@ -4,6 +4,7 @@ import Login from '@/components/Login'
 import Home from '@/components/Home'
 import Profile from '@/components/Profile'
 import Files from '@/components/Files'
+import Bundles from '@/components/Bundles'
 import firebase from "firebase";
 
 Vue.use(Router);
@@ -29,6 +30,11 @@ let router = new Router({
                     guest: true
                 }
 
+            },
+            {
+                path: '/bundles/:bundle',
+                name: 'Bundles',
+                component: Bundles
             },
             {
                 path: '/',

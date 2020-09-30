@@ -4,6 +4,7 @@ import Login from '@/components/Login'
 import Home from '@/components/Home'
 import Profile from '@/components/Profile'
 import Files from '@/components/Files'
+import Share from '@/components/Share'
 import Bundles from '@/components/Bundles'
 import firebase from "firebase";
 
@@ -46,6 +47,14 @@ let router = new Router({
                 path: '/files',
                 name: 'Files',
                 component: Files,
+                meta: {
+                    auth: true
+                }
+            },
+            {
+                path: '/share',
+                name: 'Share',
+                component: Share,
                 meta: {
                     auth: true
                 }

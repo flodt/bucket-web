@@ -1,7 +1,7 @@
 <template>
     <section>
         <navigation></navigation>
-        <h5 class="center-align">Bundles</h5>
+        <h5 class="center-align">Viewing file bundle</h5>
         <p class="center-align">Bundle ID {{ this.$route.params.bundle }}</p>
 
         <p class="center-align" style="display: block" id="nothing_here">There seems to be nothing here. The bundle's ID could be invalid.</p>

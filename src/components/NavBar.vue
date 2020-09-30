@@ -21,6 +21,12 @@
                     </router-link>
                 </li>
                 <li v-show="user">
+                    <router-link to="/share">
+                        <i class="material-icons left">share</i>
+                        Share
+                    </router-link>
+                </li>
+                <li v-show="user">
                     <router-link to="/profile">
                         <i class="material-icons left">person</i>
                         Profile
@@ -69,6 +75,15 @@
                     <router-link to="/profile" class="sidenav-close">
                         <i class="material-icons left">person</i>
                         Profile
+                    </router-link>
+                </li>
+                <li v-show="user">
+                    <a class="subheader">Share with others</a>
+                </li>
+                <li v-show="user">
+                    <router-link to="/share" class="sidenav-close">
+                        <i class="material-icons left">share</i>
+                        Share
                     </router-link>
                 </li>
                 <li v-show="user">

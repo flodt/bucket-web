@@ -328,41 +328,54 @@
                         //download all the file references
                         let zip = new JSZip();
                         let count = 0;
+                        let individualProgress = new Map();
 
                         document.getElementById("downloadProgressText").innerText
                             = "Downloading 0/" + list.items.length + "... (0%)";
 
                         list.items.forEach(function (file) {
                             file.getDownloadURL().then(function (url) {
-                                JSZipUtils.getBinaryContent(url, function (err, data) {
-                                    console.log(`Zipping file…`);
-                                    console.log(err);
-                                    zip.file(file.name, data, {binary: true});
-                                    count++;
+                                individualProgress[url] = 0;
 
-                                    //update progress bar
-                                    document.getElementById("downloadProgressBar").className = "determinate";
-                                    let totalProgress = (count / list.items.length) * 100;
-                                    console.log("Total download progress: " + totalProgress);
-                                    document.getElementById("downloadProgressBar").style.width = totalProgress + "%";
-                                    document.getElementById("downloadProgressText").innerText
-                                        = "Downloading " + count + "/" + list.items.length + "... (" + totalProgress.toFixed(1) + "%)";
+                                JSZipUtils.getBinaryContent(url, {
+                                    callback: function (err, data) {
+                                        console.log(`Zipping file…`);
+                                        zip.file(file.name, data, {binary: true});
+                                        count++;
 
-                                    if (count === list.items.length) {
-                                        //set progress bar to indeterminate
-                                        document.getElementById("downloadProgressBar").className = "indeterminate";
+                                        if (count === list.items.length) {
+                                            //set progress bar to indeterminate
+                                            document.getElementById("downloadProgressBar").className = "indeterminate";
 
-                                        //announce archive generation
-                                        document.getElementById("downloadProgressText").innerText
-                                            = "Generating zip archive...";
+                                            //announce archive generation
+                                            document.getElementById("downloadProgressText").innerText
+                                                = "Generating zip archive...";
 
-                                        //now trigger the download of the jszip file
-                                        zip.generateAsync({type: "blob"}).then(function (content) {
-                                            saveAs(content, "bucket.zip");
-                                            M.toast({html: 'Download finished!'});
-                                            document.getElementById("downloadProgress").style.display = "none";
-                                            document.getElementById("downloadProgressText").style.display = "none";
+                                            //now trigger the download of the jszip file
+                                            zip.generateAsync({type: "blob"}).then(function (content) {
+                                                saveAs(content, "bucket.zip");
+                                                M.toast({html: 'Download finished!'});
+                                                document.getElementById("downloadProgress").style.display = "none";
+                                                document.getElementById("downloadProgressText").style.display = "none";
+                                            });
+                                        }
+                                    },
+                                    progress: function (progressEvent) {
+                                        //update the progress
+                                        individualProgress[progressEvent.path] = progressEvent.percent;
+                                        let totalProgress = 0;
+                                        let alreadyFinished = 0;
+
+                                        Object.keys(individualProgress).forEach(function (key) {
+                                            totalProgress = totalProgress + individualProgress[key];
+                                            alreadyFinished = alreadyFinished + (individualProgress[key] === 100) ? 1 : 0;
                                         });
+
+                                        totalProgress = totalProgress / list.items.length;
+
+                                        document.getElementById("downloadProgressBar").style.width = totalProgress + "%";
+                                        document.getElementById("downloadProgressText").innerText
+                                            = "Downloading " + alreadyFinished + "/" + list.items.length + "... (" + totalProgress.toFixed(1) + "%)";
                                     }
                                 });
                             }).catch(function (err) {

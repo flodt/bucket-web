@@ -13,7 +13,7 @@
                         <div class="determinate" style="width: 0" id="bundleDownloadProgressBar"></div>
                     </div>
                     <div style="text-align: center; font-weight: bold; display: block" id="bundleDownloadProgressText">
-                        Downloading file 0/0... (0%)
+                        Downloading 0/0... (0%)
                     </div>
                 </div>
             </div>
@@ -123,6 +123,9 @@ export default {
 
                     let count = 0;
 
+                    document.getElementById("bundleDownloadProgressText").innerText
+                        = "Downloading 0/" + list.items.length + "... (0%)";
+
                     list.items.forEach(function (file) {
                         file.getDownloadURL().then(function (url) {
                             JSZipUtils.getBinaryContent(url, function (err, data) {
@@ -137,7 +140,7 @@ export default {
                                 console.log("Total download progress: " + totalProgress);
                                 document.getElementById("bundleDownloadProgressBar").style.width = totalProgress + "%";
                                 document.getElementById("bundleDownloadProgressText").innerText
-                                    = "Downloading file " + count + "/" + list.items.length + "... (" + totalProgress.toFixed(1) + "%)";
+                                    = "Downloading " + count + "/" + list.items.length + "... (" + totalProgress.toFixed(1) + "%)";
 
                                 if (count === list.items.length) {
                                     //set progress bar to indeterminate

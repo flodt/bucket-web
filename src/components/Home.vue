@@ -31,7 +31,7 @@
                             <div class="determinate" style="width: 0" id="uploadProgressBar"></div>
                         </div>
                         <div style="text-align: center; font-weight: bold; display: none" id="uploadProgressText">
-                            Uploading file 0/0... (0%)
+                            Uploading 0/0... (0%)
                         </div>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                             <div class="determinate" style="width: 0" id="downloadProgressBar"></div>
                         </div>
                         <div style="text-align: center; font-weight: bold; display: none" id="downloadProgressText">
-                            Downloading file 0/0... (0%)
+                            Downloading 0/0... (0%)
                         </div>
                     </div>
                 </div>
@@ -271,7 +271,7 @@
                             const totalProgress = individualProgress.reduce((a, b) => a + b, 0) / individualProgress.length;
                             document.getElementById("uploadProgressBar").style.width = totalProgress + "%";
                             document.getElementById("uploadProgressText").innerText
-                                = "Uploading file " + alreadyFinished + "/" + files.length + "... (" + totalProgress.toFixed(1) + "%)";
+                                = "Uploading " + alreadyFinished + "/" + files.length + "... (" + totalProgress.toFixed(1) + "%)";
                         }, function (error) {
                             //continue propagation of error
                             throw error;
@@ -327,8 +327,10 @@
                     .then(function (list) {
                         //download all the file references
                         let zip = new JSZip();
-
                         let count = 0;
+
+                        document.getElementById("downloadProgressText").innerText
+                            = "Downloading 0/" + list.items.length + "... (0%)";
 
                         list.items.forEach(function (file) {
                             file.getDownloadURL().then(function (url) {
@@ -344,7 +346,7 @@
                                     console.log("Total download progress: " + totalProgress);
                                     document.getElementById("downloadProgressBar").style.width = totalProgress + "%";
                                     document.getElementById("downloadProgressText").innerText
-                                        = "Downloading file " + count + "/" + list.items.length + "... (" + totalProgress.toFixed(1) + "%)";
+                                        = "Downloading " + count + "/" + list.items.length + "... (" + totalProgress.toFixed(1) + "%)";
 
                                     if (count === list.items.length) {
                                         //set progress bar to indeterminate

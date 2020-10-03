@@ -137,7 +137,7 @@ export default {
                                 console.log("Total download progress: " + totalProgress);
                                 document.getElementById("bundleDownloadProgressBar").style.width = totalProgress + "%";
                                 document.getElementById("bundleDownloadProgressText").innerText
-                                    = "Downloading file " + count + "/" + list.items.length + "... (" + totalProgress.toFixed(2) + "%)";
+                                    = "Downloading file " + count + "/" + list.items.length + "... (" + totalProgress.toFixed(1) + "%)";
 
                                 if (count === list.items.length) {
                                     //set progress bar to indeterminate

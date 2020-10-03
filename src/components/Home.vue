@@ -271,7 +271,7 @@
                             const totalProgress = individualProgress.reduce((a, b) => a + b, 0) / individualProgress.length;
                             document.getElementById("uploadProgressBar").style.width = totalProgress + "%";
                             document.getElementById("uploadProgressText").innerText
-                                = "Uploading file " + alreadyFinished + "/" + files.length + "... (" + totalProgress.toFixed(2) + "%)";
+                                = "Uploading file " + alreadyFinished + "/" + files.length + "... (" + totalProgress.toFixed(1) + "%)";
                         }, function (error) {
                             //continue propagation of error
                             throw error;
@@ -344,7 +344,7 @@
                                     console.log("Total download progress: " + totalProgress);
                                     document.getElementById("downloadProgressBar").style.width = totalProgress + "%";
                                     document.getElementById("downloadProgressText").innerText
-                                        = "Downloading file " + count + "/" + list.items.length + "... (" + totalProgress.toFixed(2) + "%)";
+                                        = "Downloading file " + count + "/" + list.items.length + "... (" + totalProgress.toFixed(1) + "%)";
 
                                     if (count === list.items.length) {
                                         //set progress bar to indeterminate

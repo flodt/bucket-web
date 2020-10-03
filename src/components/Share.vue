@@ -206,7 +206,7 @@ export default {
                         const totalProgress = individualProgress.reduce((a, b) => a + b, 0) / individualProgress.length;
                         document.getElementById("noDeleteUploadProgressBar").style.width = totalProgress + "%";
                         document.getElementById("noDeleteUploadProgressText").innerText
-                            = "Uploading file " + alreadyFinished + "/" + files.length + "... (" + totalProgress.toFixed(2) + "%)";
+                            = "Uploading file " + alreadyFinished + "/" + files.length + "... (" + totalProgress.toFixed(1) + "%)";
                     }, function (error) {
                         //continue propagation of error
                         throw error;

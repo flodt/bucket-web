@@ -198,7 +198,8 @@
                 let inputContent = document.getElementById("enter_url").value;
 
                 try {
-                    new URL(inputContent);
+                    if (inputContent !== "") new URL(inputContent);
+
                     firebase
                         .database()
                         .ref()

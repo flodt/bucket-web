@@ -1,7 +1,7 @@
 <template>
     <section>
         <navigation></navigation>
-        <h5 class="center-align">Profile</h5>
+        <h5 class="center-align">Account</h5>
 
         <div class="card horizontal" style="max-width:400px;margin:0 auto;" v-if="user">
             <div class="card-image" style="margin-top:25px;margin-left:10px;"><img :src="user.photoURL"

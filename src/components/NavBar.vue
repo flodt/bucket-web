@@ -29,7 +29,7 @@
                 <li v-show="user">
                     <router-link to="/profile">
                         <i class="material-icons left">person</i>
-                        Profile
+                        Account
                     </router-link>
                 </li>
                 <li v-show="user">
@@ -74,7 +74,7 @@
                 <li v-show="user">
                     <router-link to="/profile" class="sidenav-close">
                         <i class="material-icons left">person</i>
-                        Profile
+                        Account
                     </router-link>
                 </li>
                 <li v-show="user">

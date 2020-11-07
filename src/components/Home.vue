@@ -93,14 +93,26 @@
                             <input id="enter_url" type="text" class="validate">
                             <label for="enter_url">Enter URL...</label>
                         </div>
-                        <a
+
+                        <div class="right-align">
+                            <a
+                                id="clear_url_button"
+                                class="btn red waves-effect waves-light"
+                                style="alignment: center"
+                                @click="onClearURL"
+                            >
+                                <i class="material-icons">delete</i>
+                            </a>
+                            <a
                                 id="submit_url_button"
                                 class="btn red waves-effect waves-light"
-                                style="display: none; alignment: center"
+                                style="alignment: center"
                                 @click="onSubmitURL"
-                        >
-                            Submit
-                        </a>
+                            >
+                                <i class="material-icons left">send</i>
+                                Submit
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -170,6 +182,23 @@
             });
         },
         methods: {
+            /**
+             * Called when the URL should be cleared.
+             */
+            onClearURL() {
+                firebase
+                    .database()
+                    .ref()
+                    .child(this.user.uid)
+                    .set({
+                        url: ""
+                    });
+
+                document.getElementById("enter_url").value = "";
+                this.updateDownloadCard();
+
+                M.toast({html: `URL has been cleared.`});
+            },
             /**
              * Called when the open URL FAB is clicked.
              */

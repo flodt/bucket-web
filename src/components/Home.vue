@@ -203,6 +203,7 @@
              * Called when the open URL FAB is clicked.
              */
             onOpenURL() {
+                const wRef = window.open();
                 firebase
                     .database()
                     .ref()
@@ -213,10 +214,10 @@
 
                         try {
                             new URL(databaseUrl);
-                            window.open(databaseUrl);
+                            wRef.location = databaseUrl;
                             M.toast({html: `Opening URL…`});
                         } catch (_) {
-                            M.toast({html: `The shared URL was invalid.`});
+                            alert("The shared URL was invalid.");
                         }
                     });
             },
